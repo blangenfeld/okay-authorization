@@ -15,7 +15,7 @@ function deny() {
     this.authorized = false;
 }
 
-router.authorizedByDefault = true;
+router.authorizedByDefault = false;
 router.set = function(name, value) {
   if(name === 'authorized by default')
     this.authorizedByDefault = !!value;
