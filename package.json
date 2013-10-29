@@ -1,0 +1,29 @@
+{
+  "name": "okay",
+  "version": "0.0.0",
+  "description": "Provides both client- and server-side authorization with a single configuration.",
+  "main": "index.js",
+  "dependencies": {
+    "express": "~3.4.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/blangenfeld/okay.git"
+  },
+  "keywords": [
+    "okay",
+    "authorization",
+    "client",
+    "server",
+    "node"
+  ],
+  "author": "Brian Langenfeld",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/blangenfeld/okay/issues"
+  }
+}
