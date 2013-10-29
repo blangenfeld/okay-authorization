@@ -24,12 +24,12 @@ router.get('/users', allowAdmin);
 
 Authorizer functions receive two arguments:
 
-* `req` : an object containing details about the authorization request
+* `req` : an object containing details about the authorization request, including data passed during authorization (see below) and any parameters parsed
 * `next` : a method for passing control to the next authorizer in the list
 
 ```
 function allowAdmin(req, next) {
-    if(req.user.role === 'admin') req.allow();
+    if(req.data.user.role === 'admin') req.allow();
     next();
 }
 ```
@@ -41,6 +41,8 @@ With the router configured, you're ready to authorize actions by calling its `ok
 ```
 router.okay('get', '/users', { user: someObject }, doneAuthorizing);
 ```
+
+If your authorizer functions require context, you can supply it as the optional third argument (as above). Attributes and methods defined in this object are made available to authorizer functions as `req.data`.
 
 The callback function for the `okay` method receives two arguments:
 
@@ -98,6 +100,19 @@ app.use(okay);
 
 Coming soon.
 
+# Options
+
+Call an **okay** router's `set(option, value)` method to override default behavior.
+
+Options currently available:
+
+* **'authorized by default'** _(default: `false`)_
+
+  Specifies whether the router will assume any actions against routes it doesn't know about should be authorized.
+
+# To do items
+
+**Okay** is currently built on top of [express](http://expressjs.com)'s routing code. At some point, it would might be good to remove this dependency by either writing a stripped-down version or pulling it in.
 
 # Thank you
 The idea was inspired by [cando](http://github.com/jackruss/cando), and the implementation is based on (shamelessly ripped from, actually) [express](http://expressjs.com)'s routing middleware.
