@@ -1,15 +1,3 @@
-/*
-var router = require('./config/okay');
-router.set('authorized by default', false).
-     get('/allow', function(req, next) { req.allow(); next(); }).
-     get('/deny', function(req, next) { req.deny(); next(); }).
-     get('/foo/:fooId',
-      function(req, next) { if(req.params.fooId === '123') req.allow(); next(); },
-      function(req, next) { req.deny(next); next(); }
-    );
-router.okay('get', '/foo/1234', function(err,authorized) { console.log('authorized: ' + authorized); });
-*/
-
 var Route = require('./lib/route'),
     Router = require('./lib/router'),
     utils = require('./lib/utils'),
@@ -76,10 +64,8 @@ router.dispatch = function(req, done) {
 
     // If we didn't find any routes, we're done.
     if (!route) {
-      console.log('authorizedByDefault: ' + self.authorizedByDefault);
       return done(err, req.authorized || self.authorizedByDefault);
     };
-    console.log('matched %s %s', route.method, route.path);
 
     //
     // for each param in params
@@ -146,7 +132,6 @@ router.dispatch = function(req, done) {
     // invoke route callbacks
     function callbacks(err) {
       var fn = route.callbacks[i++];
-      console.log('err: ' + err + ', fn: ' + fn);
       try {
         if('route' == err) {
           // The last callback hit "eject" by calling next('route').
