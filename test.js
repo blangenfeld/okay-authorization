@@ -5,10 +5,10 @@ describe('okay', function() {
 	before(function() {
 		okay
 			.get('/admin',
-				function(req, next) { if(req.user.role === 'admin') req.allow(); next(); })
+				function(req, next) { if(req.data.user.role === 'admin') req.allow(); next(); })
 			.get('/user/:userId',
-				function(req, next) { if(req.user.id === req.params.userId) req.allow(); next(); },
-				function(req, next) { if(req.user.role === 'admin') req.allow(); next(); })
+				function(req, next) { if(req.data.user.id === req.params.userId) req.allow(); next(); },
+				function(req, next) { if(req.data.user.role === 'admin') req.allow(); next(); })
 		;
 	});
 

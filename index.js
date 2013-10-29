@@ -29,9 +29,11 @@ router.okay = function(method, url, data, done) {
     done = data;
     data = null;
   }
-  req = data || {};
-  req.method = req.method || method;
-  req.url = req.url || url;
+  req = {
+    method: method,
+    url: url,
+    data: data
+  }
   this.dispatch(req, done);
 };
 
