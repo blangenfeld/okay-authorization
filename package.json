@@ -1,6 +1,6 @@
 {
   "name": "okay",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Provides both client- and server-side authorization with a single configuration.",
   "main": "index.js",
   "dependencies": {
