@@ -1,6 +1,6 @@
 {
   "name": "okay-authorization",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Provides both client- and server-side authorization with a single configuration.",
   "main": "index.js",
   "dependencies": {
