@@ -18,10 +18,10 @@ function deny() {
 router.authorizedByDefault = false;
 router.set = function(name, value) {
   if(name === 'authorized by default')
-    this.authorizedByDefault = !!value;
+    router.authorizedByDefault = !!value;
   else
     throw new Error('unknown option: ' + name);
-  return this;
+  return router;
 };
 
 router.okay = function(method, url, data, done) {
@@ -34,12 +34,12 @@ router.okay = function(method, url, data, done) {
     url: url,
     data: data
   }
-  this.dispatch(req, done);
+  router.dispatch(req, done);
 };
 
 router.dispatch = function(req, done) {
-  var self = this,
-      params = this.params;
+  var self = router,
+      params = self.params;
 
   if(!done)
     throw new Error('no callback function supplied');
