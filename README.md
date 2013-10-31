@@ -156,6 +156,16 @@ window.app = angular.module('MyApp', [])
 
 Once this is done, you can use `okay` in your templates' AngularJS expressions, e.g. `data-ng-if="okay('get','/some/route')"`.
 
+# Example application
+
+The repository includes an example application using Express and AngularJS. It probably displays numerous sins (bad organization, horribly trivial authentication, et cetera), but it serves its purpose. Don't hate.
+
+To start the example application:
+
+```
+$ cd example
+$ node start
+```
 
 # Options
 
