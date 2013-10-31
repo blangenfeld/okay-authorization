@@ -1,18 +1,18 @@
 window.app = angular.module('ok', [])
 	.service('Authorization', ['$window', function($window) {
 		return {
-			can: function(verb, url) {
-				var can, data = { user: $window.user };
+			okay: function(verb, url) {
+				var okay, data = { user: $window.user };
 				$window.okay(verb, url, data, function(err, authorized) {
-					can = !err && authorized;
+					okay = !err && authorized;
 				});
-				return can;
+				return okay;
 			}
 		};
 	}])
 
 	.controller('Controller', ['$http', '$scope', '$window', 'Authorization', function($http, $scope, $window, Authorization) {
-		$scope.can = Authorization.can;
+		$scope.okay = Authorization.okay;
 
 		function clearUsers() {
 			$scope.users = [];

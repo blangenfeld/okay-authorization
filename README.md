@@ -65,13 +65,18 @@ Define your **okay** router in one place, then integrate it with your applicatio
 Integrating **okay** with (e.g.) [express](http://expressjs.com) starts with defining a connect middleware wrapping the router.
 
 ```
-var router = require('../okay');
+// authorization.js
 
+var router = require('okay-authorization');
+
+// Configure the router here...
+
+// Export whatever's needed by the server (middleware, in this case)
 module.exports = function(req, res, next) {
     var data = { ... };
     router.okay(req.method, req.url, data, function(err, authorized) {
-        if(err) { return res.send(500, err); }
-        if(!authorized) { return res.send(403, { status: "Not Authorized" }); }
+		if(err || !authorized)
+        	next(err || 'Not authorized'); // Defer to error middleware
         next();
     });
 };
@@ -82,7 +87,9 @@ The point in your middleware stack where the **okay** router middleware is invok
 If your authorizer functions depend on the presence of certain attributes (e.g. `req.user`, `req.model`), you may need to invoke the middleware inline for each route to be protected by authorization.
 
 ```
-var okay = require('../middleware/okay')),
+// server.js
+
+var okay = require('./authorization'),
     usersController = require('../controllers/users');
 
 app.get('/users', okay, usersController.index);
@@ -91,14 +98,64 @@ app.get('/users', okay, usersController.index);
 On the other hand, if your rules have no such dependencies, you're welcome to `use` the middleware wherever it makes the most sense.
 
 ```
-var okay = require('../middleware/okay'));
+// server.js
 
-app.use(okay);
+var express = require('express'),
+	okay = require('./authorization'),
+	app = express();
+
+// App configuration here...
+
+app.use(okay); // Somewhere in your middleware stack
 ```
 
 ### Client
 
-Coming soon.
+For the browser to get hold of the router, you'll need to add a couple of lines to the file defining the **okay** router.
+
+```
+// authorization.js
+
+var router = require('okay-authorization');
+
+// Configure the okay router here, then...
+
+if(typeof window !== 'undefined')
+	window.okay = router.okay;	// Make available to the browser
+```
+
+Browserify it, then link the browserified file in your pages. When the browser loads the script, you'll have access to **okay** router's `okay` method through `window.okay`.
+
+```
+$ browserify authorization.js > public/javascripts/authorization.js --ignore './connect/lib-cov'
+```
+
+Because the call to `okay` typically requires a few parameters, a client-appropriate wrapper can help keep your code simple and clean. For example, if you're using [AngularJS](http://angularjs.org) on the client side, you can register an "authorization" service, then inject that into your controllers.
+
+```
+// client.js
+
+window.app = angular.module('MyApp', [])
+	.service('Authorization', ['$window', function($window) {
+		return {
+			okay: function(verb, url) {
+				var can, data = { user: $window.user };
+				$window.okay(verb, url, data, function(err, authorized) {
+					can = !err && authorized;
+				});
+				return can;
+			}
+		};
+	}])
+	
+	.controller('Controller', ['$scope', 'Authorization', function($http, $scope, $window, Authorization) {
+		$scope.okay = Authorization.okay;
+		...
+	}]);
+```
+
+Once this is done, you can use `okay` in your templates' AngularJS expressions, e.g. `data-ng-if="okay('get','/some/route')"`.
+
 
 # Options
 
