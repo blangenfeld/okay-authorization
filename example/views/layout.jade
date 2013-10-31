@@ -1,0 +1,13 @@
+doctype 5
+html
+  head
+    title Okay example
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(type='text/javascript', src='/javascripts/authorization.js')
+    script(type='text/javascript', src='/lib/angular/angular.js')
+    script(type='text/javascript', src='/javascripts/client.js')
+    if user
+        script(type='text/javascript').
+            window.user = !{user};
+  body(data-ng-app="ok")
+    block content

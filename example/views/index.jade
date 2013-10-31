@@ -1,0 +1,19 @@
+extends layout
+
+block content
+	div(data-ng-controller="Controller")
+		h1 Okay example
+		p.flash(data-ng-show="flash")
+			{{flash}}
+		p
+			a(data-ng-show="can('get', '/api/signin')" data-ng-click="signin('non-admin')") Sign in as a non-admin
+		p
+			a(data-ng-show="can('get', '/api/signin')" data-ng-click="signin('admin')") Sign in as an admin (super secure!)
+		p
+			a(data-ng-show="can('get', '/api/signout')" data-ng-click="signout()") Sign out
+		p
+			a(data-ng-show="can('get', '/api/users')" data-ng-click="fetchUsers()" ) View the user list
+		div(data-ng-show="users")
+			h2 Users in the system
+			ul
+				li(data-ng-repeat="user in users track by $index") {{user.name}} ({{user.role}})
