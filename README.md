@@ -1,6 +1,6 @@
 # Okay
 
-**Okay** is a node package for performing authorization checks. Because it can be browserfied, a single **okay** setup can be used on both client and server.
+**Okay** is a node package for performing authorization checks. Because it can be [browserified](http://browserify.org/), a _single set of authorization rules_ can be used on both client and server.
 
 ## Overview
 
@@ -11,7 +11,7 @@ If you've used [express](http://expressjs.com), you'll be right at home.
 ### Get hold of a router
 
 ```
-var router = require('okay');
+var router = require('okay-authorization');
 ```
 
 ### Define some routes
@@ -29,7 +29,7 @@ Authorizer functions receive two arguments:
 
 ```
 function allowAdmin(req, next) {
-    if(req.data.user.role === 'admin') req.allow();
+    if(req.data.user && req.data.user.role === 'admin') req.allow();
     next();
 }
 ```
@@ -58,7 +58,7 @@ function doneAuthorizing(err, authorized) {
 
 ## Integration
 
-Define your **okay** router in one place, then integrate it with your application wherever you'd like.
+Define your **okay** router and authorization rules in one place, then use them wherever you'd like.
 
 ### Server
 
@@ -124,7 +124,7 @@ if(typeof window !== 'undefined')
 	window.okay = router.okay;	// Make available to the browser
 ```
 
-Browserify it, then link the browserified file in your pages. When the browser loads the script, you'll have access to the **okay** router's `okay` method through `window.okay`.
+[Browserify](http://browserify.org/) it, then link the browserified file in your pages. When the browser loads the script, you'll have access to the **okay** router's `okay` method through `window.okay`.
 
 ```
 $ browserify authorization.js > public/javascripts/authorization.js --ignore './connect/lib-cov'
