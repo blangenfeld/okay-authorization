@@ -12,11 +12,12 @@ if(typeof window !== 'undefined') {
 else {
 	// We're on the server
 	module.exports = function(req, res, next) {
-		var data = { user: req.cookies.user };
+		var data = { user: req.session.user };
 		router.okay(req.method, req.url, data, function(err, authorized) {
-			if(!authorized)
-		    	return res.render('index', { flash: 'Sorry, but no' });
-		    next(err);
+			if(err || !authorized) {
+				return next(err || 'Nope');
+			}
+		    next();
 		});
 	}
 }
