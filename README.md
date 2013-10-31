@@ -124,7 +124,7 @@ if(typeof window !== 'undefined')
 	window.okay = router.okay;	// Make available to the browser
 ```
 
-Browserify it, then link the browserified file in your pages. When the browser loads the script, you'll have access to **okay** router's `okay` method through `window.okay`.
+Browserify it, then link the browserified file in your pages. When the browser loads the script, you'll have access to the **okay** router's `okay` method through `window.okay`.
 
 ```
 $ browserify authorization.js > public/javascripts/authorization.js --ignore './connect/lib-cov'
@@ -148,7 +148,7 @@ window.app = angular.module('MyApp', [])
 		};
 	}])
 	
-	.controller('Controller', ['$scope', 'Authorization', function($http, $scope, $window, Authorization) {
+	.controller('Controller', ['$scope', 'Authorization', function($http, $scope, Authorization) {
 		$scope.okay = Authorization.okay;
 		...
 	}]);
